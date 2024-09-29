@@ -306,6 +306,9 @@ decoder_model.fit(x=generator,
 `generate_caption` function loads an image and generates a caption using the model we have trained.
 
 
+![imagecaption](https://github.com/user-attachments/assets/23774382-96da-4ac4-b33e-0f5c69e0975c)
+
+
 ### Learnings:
 `Convolutional Neural Networks`
 `Transfer Learnign`
@@ -313,14 +316,6 @@ decoder_model.fit(x=generator,
 `Neural Networks`
 `dash-plotly`
 `VGG16`
-
-
-
-
-
-
-## References:
-[Hvass Laboratories](https://www.hvass-labs.org/)
 
 ### Feedback
 
