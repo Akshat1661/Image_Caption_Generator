@@ -1,46 +1,37 @@
 <div align="center">
   
-[1]: https://github.com/Pradnya1208
-[2]: https://www.linkedin.com/in/pradnya-patil-b049161ba/
-[3]: https://public.tableau.com/app/profile/pradnya.patil3254#!/
-[4]: https://twitter.com/Pradnya1208
+[1]: https://github.com/Akshat1661
+[2]: https://www.linkedin.com/in/akshat-desai-10bba1235/
 
 
 [![github](https://raw.githubusercontent.com/Pradnya1208/Telecom-Customer-Churn-prediction/c292abd3f9cc647a7edc0061193f1523e9c05e1f/icons/git.svg)][1]
 [![linkedin](https://raw.githubusercontent.com/Pradnya1208/Telecom-Customer-Churn-prediction/9f5c4a255972275ced549ea6e34ef35019166944/icons/iconmonstr-linkedin-5.svg)][2]
-[![tableau](https://raw.githubusercontent.com/Pradnya1208/Telecom-Customer-Churn-prediction/e257c5d6cf02f13072429935b0828525c601414f/icons/icons8-tableau-software%20(1).svg)][3]
-[![twitter](https://raw.githubusercontent.com/Pradnya1208/Telecom-Customer-Churn-prediction/c9f9c5dc4e24eff0143b3056708d24650cbccdde/icons/iconmonstr-twitter-5.svg)][4]
 
 </div>
 
 # <div align="center">Image Caption Generator</div>
-<div align="center"><img src="https://github.com/Pradnya1208/Image-Caption-Generator/blob/main/output/image_captioning.gif?raw=true"></div>
 
 ## Overview:
-In Machine Translation, we use two Recurrent Neural Networks (RNN), the first called an encoder and the second called a decoder.
-If we want to translate text from one human language to another, The first RNN encodes the source-text as a single vector of numbers and the second RNN decodes this vector into the destination-text. The intermediate vector between the encoder and decoder is a kind of summary of the source-text, which is sometimes called a "thought-vector". The reason for using this intermediate summary-vector is to understand the whole source-text before it is being translated. This also allows for the source- and destination-texts to have different lengths.
-In this project, we will replace the encoder with an image-recognition model.
-The image-model recognizes what the image contains and outputs that as a vector of numbers the "thought-vector" or summary-vector, which is then input to a Recurrent Neural Network that decodes this vector into text.
+In the field of Machine Translation, we utilize two Recurrent Neural Networks (RNNs): the first serves as an encoder, while the second acts as a decoder. When translating text from one language to another, the encoder RNN processes the source text and compresses it into a single numerical vector. This vector is then fed into the decoder RNN, which generates the translated text in the target language. The intermediate vector, often referred to as a "thought vector," summarizes the source text, allowing the model to comprehend the entire input before proceeding with the translation. This design accommodates varying lengths of source and target texts.
 
-## Flowchart:
-<br>
-<img src="https://github.com/Pradnya1208/Image-Caption-Generator/blob/main/output/intro.PNG?raw=true">
-<br>
+In this project, we will replace the traditional encoder with an image recognition model. This image model will identify the contents of an image and produce a corresponding numerical vector, serving as the thought vector. This vector will then be used as input for the RNN decoder to generate descriptive text.
 
-- We will use the VGG16 model that has been pre-trained for classifying images. But instead of using the last classification layer, we will redirect the output of the previous layer. This gives us a vector with 4096 elements that summarizes the image-contents 
-- We will use this vector as the initial state of the Gated Recurrent Units (GRU). However, the internal state-size of the GRU is only 512, so we need an intermediate fully-connected (dense) layer to map the vector with 4096 elements down to a vector with only 512 elements.
-- The decoder then uses this initial-state together with a start-marker "ssss" to begin producing output words.
-- Then we input this word into the decoder and hopefully we get the word "brown" out, and so on.
-- Finally we have generated the text "big brown bear sitting eeee" where "eeee" marks the end of the text.
+## Image-to-Text Generator Flow:
+
+We will utilize the VGG16 model, which has been pre-trained for image classification tasks. Instead of employing the final classification layer, we will capture the output from the preceding layer. This results in a vector consisting of 4096 elements that encapsulates the contents of the image.
+
+This vector will serve as the initial state for the Gated Recurrent Units (GRU). However, since the GRU has an internal state size of only 512, we need an intermediate fully connected (dense) layer to reduce the 4096-element vector to a 512-element vector.
+
+The decoder will then use this initial state along with a start marker, "ssss," to initiate the generation of output words.
+
+We will input this generated word into the decoder, which should ideally produce the word "brown," and the process will continue in this manner.
+
+Ultimately, we will generate the text "big brown bear sitting eeee," where "eeee" signifies the end of the generated text.
 
 ## Dataset:
 [Coco's Dataset](https://cocodataset.org/#home)<br>
 COCO dataset contains many images with text-captions
 <br>
-#### Example Image:
-<img src="https://github.com/Pradnya1208/Image-Caption-Generator/blob/main/output/example.PNG?raw=true">
-
-
 
 ## Implementation:
 
@@ -54,11 +45,11 @@ image_model = VGG16(include_top=True, weights='imagenet')
 
 Above line creates an instance of the VGG16 model using the Keras API. This automatically downloads the required files if you don't have them already.
 
-The VGG16 model was pre-trained on the ImageNet data-set for classifying images. The VGG16 model contains a convolutional part and a fully-connected (or dense) part which is used for the image classification.
+The VGG16 model has been pre-trained on the ImageNet dataset for the purpose of image classification. It consists of both a convolutional section and a fully connected (or dense) section used for classifying images.
 
-If include_top=True then the whole VGG16 model is downloaded which is about 528 MB. If include_top=False then only the convolutional part of the VGG16 model is downloaded which is just 57 MB.
+When include_top=True, the entire VGG16 model is downloaded, which is approximately 528 MB in size. Conversely, setting include_top=False allows for the download of only the convolutional portion of the VGG16 model, resulting in a much smaller file size of around 57 MB.
 
-We will use some of the fully-connected layers in this pre-trained model, so we have to download the full model, but if you have a slow internet connection, then you can try and modify the code below to use the smaller pre-trained model without the classification layers.
+Since we will utilize some of the fully connected layers from this pre-trained model, we will need to download the complete version. However, if you have a slow internet connection, you may consider modifying the code below to utilize the smaller pre-trained model without the classification layers.
 <br>
 
 #### Model summary:
@@ -143,8 +134,6 @@ We now make functions for processing all images in the data-set using the pre-tr
 We effectively create a new data-set of the transfer-values. This is because it takes a long time to process an image in the VGG16 model. We will not be changing all the parameters of the VGG16 model, so every time it processes an image, it gives the exact same result. We need the transfer-values to train the image-captioning model for many epochs, so we save a lot of time by calculating the transfer-values once and saving them in a cache-file.
 <br>
 `process_images()` , `process_images_train()` , and `process_images_val()` are the helper functions used for processing the images.<br>
-Checkout the [Notebook](https://github.com/Pradnya1208/Image-Caption-Generator/blob/main/Scripts/Image_caption_generator.ipynb) for more details.
-
 
 
 ## Tokenizer:
@@ -184,14 +173,11 @@ tokens_train = tokenizer.captions_to_tokens(captions_train_marked)
 
 
 ## Data Generator:
-Each image in the training-set has at least 5 captions describing the contents of the image. The neural network will be trained with batches of transfer-values for the images and sequences of integer-tokens for the captions. If we were to have matching numpy arrays for the training-set, we would either have to only use a single caption for each image and ignore the rest of this valuable data, or we would have to repeat the image transfer-values for each of the captions, which would waste a lot of memory.
+Each image in the training set comes with at least five captions that describe its contents. The neural network will be trained using batches of transfer values from the images and sequences of integer tokens representing the captions. If we were to create matching NumPy arrays for the training set, we would either need to use only one caption per image, thereby disregarding valuable data, or we would have to duplicate the image transfer values for each caption, which would lead to excessive memory usage.
 
-A better solution is to create a custom data-generator for Keras that will create a batch of data with randomly selected transfer-values and token-sequences.
-This helper-function returns a list of random token-sequences for the images with the given indices in the training-set.
-<br>
-`get_random_caption_tokens()` generator function creates random batches of training-data for use in training the neural network.
-<br>
-`batch_generator()`  Generator function for creating random batches of training-data. It selects the data completely randomly for each batch, corresponding to sampling of the training-set with replacement. This means it is possible to sample the same data multiple times within a single epoch - and it is also possible that some data is not sampled at all within an epoch. However, all the data should be unique within a single batch.
+A more effective approach is to implement a custom data generator for Keras that produces batches of data with randomly selected transfer values and token sequences. This helper function provides a list of random token sequences corresponding to the images at specified indices in the training set.
+
+The get_random_caption_tokens() generator function creates random batches of training data for the neural network training process. Additionally, the batch_generator() function generates random batches of training data by selecting data entirely at random for each batch, akin to sampling the training set with replacement. This means that the same data can be sampled multiple times within a single epoch, while some data might not be sampled at all. However, all data within a single batch will be unique.
 
 #### Steps:
 - Create an instance of the data-generator:
@@ -293,13 +279,15 @@ decoder_model = Model(inputs=[transfer_values_input, decoder_input],
 
 
 ## Compile the model:
-The output of the decoder is a sequence of one-hot encoded arrays. In order to train the decoder we need to supply the one-hot encoded arrays that we desire to see on the decoder's output, and then use a loss-function like cross-entropy to train the decoder to produce this desired output.
+The decoder produces output as a sequence of one-hot encoded arrays. To train the decoder, we need to provide the desired one-hot encoded arrays for its output and then utilize a loss function, such as cross-entropy, to guide the decoder in generating this expected output.
 
-However, our data-set contains integer-tokens instead of one-hot encoded arrays. Each one-hot encoded array has 10000 elements so it would be extremely wasteful to convert the entire data-set to one-hot encoded arrays. We could do this conversion from integers to one-hot arrays in the batch_generator() above.
+However, our dataset consists of integer tokens rather than one-hot encoded arrays. Since each one-hot encoded array contains 10,000 elements, converting the entire dataset to this format would be highly inefficient. We could perform this conversion from integers to one-hot arrays within the batch_generator() function mentioned earlier.
 
-A better way is to use a so-called sparse cross-entropy loss-function, which does the conversion internally from integers to one-hot encoded arrays.
+A more efficient approach is to use a sparse cross-entropy loss function, which automatically handles the conversion from integers to one-hot encoded arrays internally.
 
-We have used the Adam optimizer in many of the previous tutorials, but it seems to diverge in some of these experiments with Recurrent Neural Networks. RMSprop seems to work much better for these.
+While we have often employed the Adam optimizer in previous tutorials, it has shown signs of divergence in some of our experiments with Recurrent Neural Networks. In these cases, the RMSprop optimizer tends to yield better results.
+
+
 ```
 decoder_model.compile(optimizer=RMSprop(lr=1e-3),
                       loss='sparse_categorical_crossentropy')
@@ -316,10 +304,6 @@ decoder_model.fit(x=generator,
 ```
 ## Generate captions:
 `generate_caption` function loads an image and generates a caption using the model we have trained.
-
-### Results:
-<img src="https://github.com/Pradnya1208/Image-Caption-Generator/blob/main/output/predict1.PNG?raw=true" width="40%">  
-<img src="https://github.com/Pradnya1208/Image-Caption-Generator/blob/main/output/predict3.PNG?raw=true"><img src="https://github.com/Pradnya1208/Image-Caption-Generator/blob/main/output/predict4.PNG?raw=true">
 
 
 ### Learnings:
@@ -340,33 +324,13 @@ decoder_model.fit(x=generator,
 
 ### Feedback
 
-If you have any feedback, please reach out at pradnyapatil671@gmail.com
+If you have any feedback, please reach out at akshat.desai.754@gmail.com
 
-
-### 🚀 About Me
-#### Hi, I'm Pradnya! 👋
-I am an AI Enthusiast and  Data science & ML practitioner
-
-
-
-
-
-
-
-
-[1]: https://github.com/Pradnya1208
-[2]: https://www.linkedin.com/in/pradnya-patil-b049161ba/
-[3]: https://public.tableau.com/app/profile/pradnya.patil3254#!/
-[4]: https://twitter.com/Pradnya1208
+[1]: https://github.com/Akshat1661
+[2]: https://www.linkedin.com/in/akshat-desai-10bba1235/
 
 
 [![github](https://raw.githubusercontent.com/Pradnya1208/Telecom-Customer-Churn-prediction/c292abd3f9cc647a7edc0061193f1523e9c05e1f/icons/git.svg)][1]
 [![linkedin](https://raw.githubusercontent.com/Pradnya1208/Telecom-Customer-Churn-prediction/9f5c4a255972275ced549ea6e34ef35019166944/icons/iconmonstr-linkedin-5.svg)][2]
-[![tableau](https://raw.githubusercontent.com/Pradnya1208/Telecom-Customer-Churn-prediction/e257c5d6cf02f13072429935b0828525c601414f/icons/icons8-tableau-software%20(1).svg)][3]
-[![twitter](https://raw.githubusercontent.com/Pradnya1208/Telecom-Customer-Churn-prediction/c9f9c5dc4e24eff0143b3056708d24650cbccdde/icons/iconmonstr-twitter-5.svg)][4]
-
-
-
-
 
 # Image_Caption_Generator
